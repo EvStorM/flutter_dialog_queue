@@ -27,7 +27,7 @@ class DialogQueue {
   // 请求队列
   final Map<DialogQueueElement, Completer> _dialogQueue = {};
   List<DialogQueueElement> _sortedKeys = [];
-
+  List<DialogQueueElement> get sortedKeys => _sortedKeys;
   // 构建单例
   static final DialogQueue _instance = DialogQueue._();
   static DialogQueue get instance => _instance;
@@ -42,7 +42,7 @@ class DialogQueue {
   // 队列状态
   bool _isActive = true;
   bool get isActive => _isActive;
-
+  
   // 外部回调
   Function(Route<dynamic>? pushRoute)? _onPushRemovedEvent;
 
@@ -64,6 +64,32 @@ class DialogQueue {
         resume();
       }
     });
+  }
+  // 通过uniqueKey 删除指定的对话框
+  Future<T?> removeDialog<T>(String uniqueKey, {bool isAll = false}) {
+    List<DialogQueueElement> keyList = _dialogQueue.keys.cast<DialogQueueElement>().toList();
+    if(isAll){
+      keyList.forEach((element) {
+        if(element.uniqueKey == uniqueKey){
+          _dialogQueue.remove(element);
+          _sortedKeys.remove(element);
+        }
+      });
+      _sortQueue();
+      return  Future.value();
+    } else {
+      // 找到对应的 Completer
+      DialogQueueElement dialog = keyList.firstWhere((element) => element.uniqueKey == uniqueKey);
+      int existIndex = keyList.indexOf(dialog);
+      // 找到对应的 Completer
+      if (existIndex >= 0) {
+        _dialogQueue.remove(dialog);
+        _sortedKeys.remove(dialog);
+        // 更新排序
+        _sortQueue();
+      }
+      return  Future.value();
+    }
   }
 
   Future<T?> addDialog<T>(DialogQueueElement dialog) {
