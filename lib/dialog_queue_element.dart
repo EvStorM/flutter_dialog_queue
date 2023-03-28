@@ -23,7 +23,7 @@ class DialogQueueElement<T> extends Equatable {
     _uniqueKey = uniqueKey ?? _uuid;
     _tag = tag;
   }
-  get uniqueKey => _uniqueKey ?? _uuid;
+  get uniqueKey => _uniqueKey ?? '';
   int get priority => _priority ?? defaultPriority;
 
   update(DialogQueueElement<T>? dialog) {
