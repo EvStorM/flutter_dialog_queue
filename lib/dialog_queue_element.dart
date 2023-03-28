@@ -15,7 +15,7 @@ class DialogQueueElement<T> extends Equatable {
   DialogQueueElement(
     this._show, {
     int? priority = defaultPriority,
-    String? uniqueKey,
+    String? uniqueKey = '',
     String? tag,
   }) {
     _uuid = const Uuid().v1();
