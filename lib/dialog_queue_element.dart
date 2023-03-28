@@ -11,7 +11,7 @@ class DialogQueueElement<T> extends Equatable {
   late String? _uniqueKey;
   late String? _tag;
   late String _uuid;
-
+  get uniqueKey => _uniqueKey;
   DialogQueueElement(
     this._show, {
     int? priority = defaultPriority,
